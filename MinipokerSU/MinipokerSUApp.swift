@@ -12,6 +12,7 @@ struct MinipokerSUApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+//            JuegosGanados()
         }
     }
 }

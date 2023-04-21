@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var apuesta: Int = 0
+    @State private var goToApostar: Bool = false
     
     @State var num1 : Int = 0
     @State var num2 : Int = 0
@@ -72,32 +74,33 @@ struct ContentView: View {
     ]
     
     var body: some View {
-        
-        
-        
-        ZStack {
+        NavigationStack {
             VStack(alignment: .center, spacing: 40) {
                 Image("vegas")
                     .resizable()
                     .frame(width: 300, height: 160)
+                    .cornerRadius(12)
                 
+                Text("Apuesta actual: $\(apuesta)")
+                    .font(.title)
+                    .foregroundColor(.white)
                 
                 HStack {
                     Image(baraja[num1])
                         .resizable()
-                        .frame(width: 60, height: 100)
+                        .frame(width: 70, height: 120)
                     Image(baraja[num2])
                         .resizable()
-                        .frame(width: 60, height: 100)
+                        .frame(width: 70, height: 120)
                     Image(baraja[num3])
                         .resizable()
-                        .frame(width: 60, height: 100)
+                        .frame(width: 70, height: 120)
                     Image(baraja[num4])
                         .resizable()
-                        .frame(width: 60, height: 100)
+                        .frame(width: 70, height: 120)
                     Image(baraja[num5])
                         .resizable()
-                        .frame(width: 60, height: 100)
+                        .frame(width: 70, height: 120)
                     
                 }
                 
@@ -111,7 +114,7 @@ struct ContentView: View {
                         
                     } label: {
                         Text("JUGAR")
-                            .frame(maxWidth:.infinity, maxHeight: 40)
+                            .frame(maxWidth:.infinity, maxHeight: 30)
                             .fontWeight(.heavy)
                             .font(.title)
                             .foregroundColor(.white)
@@ -120,41 +123,69 @@ struct ContentView: View {
                                 .cornerRadius(20)
                                 .shadow(radius: 12)
                             )
-                    }.padding(.top, 20)
-                        .padding(.leading, 50)
-                        .padding(.trailing, 50)
-                    Button {
-                        //Action
-                        
+                    }
+                    
+                    NavigationLink {
+                        RealizarApuesta(apuesta: $apuesta, cantidadApostar: "")
                     } label: {
                         Text("Apostar".uppercased())
-                            .frame(maxWidth:.infinity, maxHeight: 40)
+                            .frame(maxWidth:.infinity, maxHeight: 30)
                             .fontWeight(.heavy)
                             .font(.title)
                             .foregroundColor(.white)
                             .padding()
                             .background(Color.black
                                 .cornerRadius(20)
-                                .shadow(radius: 12)
                             )
-                    }.padding(.leading, 50)
-                        .padding(.trailing, 50)
-                }
+                    }
+                    
+                    HStack {
+                        NavigationLink {
+                            JuegosGanados()
+                        } label: {
+                            Text("Ganados")
+                                .frame(maxWidth:.infinity, maxHeight: 30)
+                                .font(.title3)
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(
+                                    Color.purple
+                                        .cornerRadius(20)
+                                )
+                        }
+
+                        
+                        NavigationLink {
+                            Reglas()
+                        } label: {
+                            Text("Reglas")
+                                .frame(maxWidth:.infinity, maxHeight: 30)
+                                .font(.title3)
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(
+                                    Color.gray
+                                        .cornerRadius(20)
+                                )
+                        }
+
+                    }
+                    
                 
-                Spacer()
+                    
+                }
+                .padding(.leading, 30)
+                .padding(.trailing, 30)
+                
+                
             }
-            
-        }.background(
-            Image("mesa")
-                .resizable()
-                .edgesIgnoringSafeArea(.all)
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        )
-        
-        
-        
-        
-        
+            .background(
+                Image("mesa")
+                    .resizable()
+                    .edgesIgnoringSafeArea(.all)
+                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            )
+        }
     }
 }
 
