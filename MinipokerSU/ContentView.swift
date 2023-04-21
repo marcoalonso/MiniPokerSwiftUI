@@ -10,6 +10,11 @@ import SwiftUI
 struct ContentView: View {
     @State var apuesta: Int = 0
     @State private var goToApostar: Bool = false
+    @State private var alerta1 = false
+    @State private var alerta2 = false
+    @State private var alerta3 = false
+    
+    @State private var intentos = 5
     
     @State var num1 : Int = 0
     @State var num2 : Int = 0
@@ -19,7 +24,7 @@ struct ContentView: View {
     
     @State private var showingAlert = false
     
-    var baraja = ["reverso",
+    var baraja = [
                   "trebol A",
                   "corazones A",
                   "picas A",
@@ -73,6 +78,8 @@ struct ContentView: View {
                   "diamantes 10"
     ]
     
+    
+    
     var body: some View {
         NavigationStack {
             VStack(alignment: .center, spacing: 40) {
@@ -106,11 +113,26 @@ struct ContentView: View {
                 
                 VStack (alignment: .center, spacing: 10 ) {
                     Button {
-                        num1 = Int.random(in: 1..<baraja.count-1)
-                        num2 = Int.random(in: 1..<baraja.count-1)
-                        num3 = Int.random(in: 1..<baraja.count-1)
-                        num4 = Int.random(in: 1..<baraja.count-1)
-                        num5 = Int.random(in: 1..<baraja.count-1)
+                        
+                        //Generar numero y luego restar, si el numero de intentos es igual a cero, perdiste!
+                        if intentos > 0 {
+                            num1 = Int.random(in: 0..<baraja.count-1)
+                            num2 = Int.random(in: 0..<baraja.count-1)
+                            num3 = Int.random(in: 0..<baraja.count-1)
+                            num4 = Int.random(in: 0..<baraja.count-1)
+                            num5 = Int.random(in: 0..<baraja.count-1)
+                            if num1 == 0 || num1 == 1 || num2 == 0 || num2 == 1 || num1 == 2 || num1 == 3 {
+//                                || num3 == 0 || num4 == 0 || num5 == 0 {
+                                print("Ganaste!")
+                                alerta1 = true
+                            }
+                            intentos -= 1
+                        } else {
+                            print("Perdiste")
+                            alerta2 = true
+                        }
+                        
+                        
                         
                     } label: {
                         Text("JUGAR")
@@ -177,8 +199,17 @@ struct ContentView: View {
                 .padding(.leading, 30)
                 .padding(.trailing, 30)
                 
-                
+                Spacer()
+            }//Vstack
+            .alert(isPresented: Binding(
+                get: { alerta1 || alerta2 || alerta3 },
+                set: { alerta1 = $0; alerta2 = $0; alerta3 = $0 })
+            ) {
+                alerta()
             }
+
+            
+            
             .background(
                 Image("mesa")
                     .resizable()
@@ -186,6 +217,29 @@ struct ContentView: View {
                     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
             )
         }
+        .accentColor(.white)
+    }
+    
+    // MARK:  Functions
+    func alerta() -> Alert {
+        if alerta1 {
+            return Alert(title: Text("Felicidades"), message: Text("Ganaste: \(apuesta)"), dismissButton: .default(Text("Aceptar")) {
+                apuesta = apuesta + apuesta
+                intentos = 5
+            })
+        } else if alerta2 {
+            return Alert(title: Text("¡Lo siento!"), message: Text("Has perdido: \(apuesta)"), dismissButton: .default(Text("Aceptar")) {
+                apuesta = 0
+                intentos = 5
+            })
+        } else if alerta3 {
+            return Alert(title: Text("Alerta 3"), message: Text("¡Esto es la alerta 3!"), dismissButton: .default(Text("OK")) {
+                print("Do something")
+            })
+        }
+        
+        // Si ninguna alerta está activa, se devuelve una alerta vacía
+        return Alert(title: Text("Error"), message: Text("No se puede mostrar la alerta."), dismissButton: .default(Text("OK")))
     }
 }
 

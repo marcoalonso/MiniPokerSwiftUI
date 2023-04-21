@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct JuegosGanados: View {
-    
+    @State private var juegosGanados = ""
 
     var body: some View {
         ZStack {
@@ -16,6 +16,15 @@ struct JuegosGanados: View {
                 .ignoresSafeArea(.all)
             
             VStack {
+                TextField("Ingrese su texto aquí", text: $juegosGanados)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .font(.title)
+                    .foregroundColor(.black)
+                    .background(
+                        Color.white
+                    )
+                    .cornerRadius(12)
+                
                 Text("Juegos Ganados")
                     .font(.largeTitle)
                     .fontWeight(.bold)
@@ -36,8 +45,9 @@ struct JuegosGanados: View {
                 
                 
                 Spacer()
-            }
-            
+            }.padding()
+//                .navigationBarBackButtonHidden(true)
+                .accentColor(.white) 
         }
     }
 }

@@ -15,6 +15,8 @@ struct Reglas: View {
                     .font(.largeTitle)
                     .foregroundColor(.white)
             }
+//            .navigationBarBackButtonHidden(true)
+            
             
         }.background(
             Image("fondo2")
